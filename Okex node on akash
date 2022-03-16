@@ -1,0 +1,39 @@
+version: "2.0"
+
+services:
+  okexchain:
+    image: okexchain/fullnode-mainnet:v1.1.2
+    expose:
+      - port: 8545
+        as: 8545
+        to:
+          - global: true
+      - port: 26656
+        as: 26656
+        to:
+          - global: true
+      - port: 8192
+        as: 8192
+        to:
+          - global: true
+profiles:
+  compute:
+    okexchain-profile:
+      resources:
+        cpu:
+          units: 2.0
+        memory:
+          size: 1Gi
+        storage:
+          size: 32Gi
+  placement:
+    westcoast:
+      pricing:
+        okexchain-profile:
+          denom: uakt
+          amount: 1000
+deployment:
+  okexchain:
+    westcoast:
+      profile: okexchain-profile
+      count: 1
